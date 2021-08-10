@@ -7,15 +7,13 @@ const url = "https://www.nikkansports.com/baseball/mlb/score/?sdc_page_code=Play
 const latestScoreTarget = 'table[summary="最新成績"] > tbody > tr > td';
 const latestDateTarget = 'table[summary="最新成績"] > tbody > tr > td > a';
 
-export default class LatestHitterScoreCrawler extends BaseCrawler {
+export class LatestHitterScoreCrawler extends BaseCrawler {
   protected async crawl(_: Browser, page: Page) {
     await page.goto(url);
-    const latestHitterStore = await Score.latestHitterScore(page, latestScoreTarget, latestDateTarget);
-    await console.log(latestHitterStore);
+    return await Score.latestHitterScore(page, latestScoreTarget, latestDateTarget);
   }
 }
-
-(async () => {
-  const crawler = new LatestHitterScoreCrawler();
-  await crawler.run();
-})();
+// (async () => {
+//   const crawler = new LatestHitterScoreCrawler();
+//   await crawler.run();
+// })();

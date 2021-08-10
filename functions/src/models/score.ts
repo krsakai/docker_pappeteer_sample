@@ -6,6 +6,8 @@ import { LatestHitterScore } from './latest_hitter_score';
 
 export * from './pitcher_score';
 export * from './hitter_score';
+export * from './latest_pitcher_score';
+export * from './latest_hitter_score';
 
 const textContent = (elm: Element) => elm.textContent
 const textListContent = (elmList: Element[]) => elmList.map((elm) => elm.textContent)

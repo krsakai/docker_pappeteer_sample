@@ -1,56 +1,77 @@
+import { JSON, JsonObject, JsonProperty } from "ta-json";
+
+@JsonObject()
 export class PitcherScore {
   /// 年
+  @JsonProperty('year')
   year: string;
 
   /// 防御率
+  @JsonProperty('era')
   era: string;
 
   /// 試合数
+  @JsonProperty('games')
   games: string;
 
   /// 完投
+  @JsonProperty('completeGames')
   completeGames: string;
 
   /// 完封
+  @JsonProperty('shutouts')
   shutouts: string;
 
   /// 勝利
+  @JsonProperty('win')
   win: string;
 
   /// 敗北
+  @JsonProperty('losses')
   losses: string;
 
   /// セーブ
+  @JsonProperty('saves')
   saves: string;
 
   /// 投球回数
+  @JsonProperty('inningsPitched')
   inningsPitched: string;
 
   /// 被安打
+  @JsonProperty('hits')
   hits: string;
 
   /// 被本塁打
+  @JsonProperty('homeRuns')
   homeRuns: string;
 
   /// 奪三振
+  @JsonProperty('strikeouts')
   strikeouts: string;
 
   /// 与四球
+  @JsonProperty('basesOnBalles')
   basesOnBalles: string;
 
   /// 与死球
+  @JsonProperty('hitsBatsmen')
   hitsBatsmen: string;
 
   /// 暴投
+  @JsonProperty('ring')
   ring: string;
 
   /// ボーク
+  @JsonProperty('bok')
   bok: string;
 
   /// 失点
+  @JsonProperty('runs')
   runs: string;
 
   /// 自責点
+  @JsonProperty('earnedRuns')
   earnedRuns: string;
 
   constructor(list: (string | null)[], year: string) {
@@ -73,5 +94,9 @@ export class PitcherScore {
     this.bok = _list[14];
     this.runs = _list[15];
     this.earnedRuns = _list[16];
+  }
+
+  toJson(): Object {
+    return JSON.parse(JSON.stringify(this))
   }
 }
