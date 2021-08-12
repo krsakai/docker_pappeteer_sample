@@ -16,13 +16,13 @@ exports.scheduledFunction = configuedFunction.schedule('every 1 hours').onRun(as
   const latestHitterScore = await new Crawler.LatestHitterScoreCrawler().run<Score.LatestHitterScore>()
   await admin.firestore()
           .collection("latestHitterScore")
-          .doc(latestHitterScore.dateYearToDay)
+          .doc(latestHitterScore.date)
           .set(latestHitterScore.toJson())
 
   const latestPitcherScore = await new Crawler.LatestPitcherScoreCrawler().run<Score.LatestPitcherScore>()
   await admin.firestore()
           .collection("latestPitcherScore")
-          .doc(latestPitcherScore.dateYearToDay)
+          .doc(latestPitcherScore.date)
           .set(latestPitcherScore.toJson())
 
   const score = await new Crawler.ScoreCrawler().run<[[Score.HitterScore],[Score.PitcherScore]]>()

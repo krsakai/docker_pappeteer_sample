@@ -14,7 +14,7 @@ export class PitcherScore {
   @JsonProperty('games')
   games: string;
 
-  /// 完投
+  /// 完封
   @JsonProperty('completeGames')
   completeGames: string;
 

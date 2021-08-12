@@ -56,7 +56,7 @@ export class LatestPitcherScore {
 
   constructor(list: (string | null)[], date: string, gameLink: string) {
     const _list: string[] = list.removeNull();
-    this.date = date;
+    this.date = this._dateYearToDayFrom(date);
     this.gameLink = gameLink;
     this.vsTeam = _list[0];
     this.outcome = _list[1];
@@ -70,8 +70,8 @@ export class LatestPitcherScore {
     this.runs = _list[9];
   }
 
-  get dateYearToDay(): string {
-    const date = this.date.split("月").map((elm => elm.replace("日", "")));
+  _dateYearToDayFrom(dateString: string): string {
+    const date = dateString.split("月").map((elm => elm.replace("日", "")));
     return `${year}-${date[0].twoDigit()}-${date[1].twoDigit()}`
   }
 
