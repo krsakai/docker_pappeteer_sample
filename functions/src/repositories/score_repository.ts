@@ -1,34 +1,19 @@
 import { Page } from "puppeteer";
-import { PitcherScore } from './pitcher_score';
-import { HitterScore } from './hitter_score';
-import { LatestPitcherScore } from './latest_pitcher_score';
-import { LatestHitterScore } from './latest_hitter_score';
+import { PitcherScore } from '../models/pitcher_score';
+import { HitterScore } from '../models/hitter_score';
+import { LatestPitcherScore } from '../models/latest_pitcher_score';
+import { LatestHitterScore } from '../models/latest_hitter_score';
 
-export * from './pitcher_score';
-export * from './hitter_score';
-export * from './latest_pitcher_score';
-export * from './latest_hitter_score';
+export * from '../models/pitcher_score';
+export * from '../models/hitter_score';
+export * from '../models/latest_pitcher_score';
+export * from '../models/latest_hitter_score';
 
 const textContent = (elm: Element) => elm.textContent
 const textListContent = (elmList: Element[]) => elmList.map((elm) => elm.textContent)
-// const dateContent = (elmList: Element[]) => elmList .map((elm) => elm.href)
-
-const titleElementFilter = (value: (string | null)) => value != "年" && value != "チーム"
 const scoreElementFilter = (value: (string | null)) => value != "エンゼルス"
 
-export class Score {
-  static pitcherTitleList = async (page: Page, target: string) => {
-    const textList = await page.$$eval(target, textListContent);
-    const titleList = textList.filter(titleElementFilter);
-    return titleList.slice(0, 17);
-  }
-
-  static hitterTitleList = async (page: Page, target: string) => {
-    const textList = await page.$$eval(target, textListContent);
-    const titleList = textList.filter(titleElementFilter);
-    return titleList.slice(17, 35);
-  }
-
+export class ScoreRepository {
   static pitcherScoreList = async (page: Page, target: string) => {
     const textList = await page.$$eval(target, textListContent);
     const scoreList = textList.filter(scoreElementFilter);

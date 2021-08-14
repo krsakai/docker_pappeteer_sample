@@ -14,6 +14,11 @@
         "kind": "build",
         "isDefault": true
       }
+    },
+    {
+      "label": "Typescipt Compile",
+      "type": "shell",
+      "command": "tsc -p ."
     }
   ]
 }

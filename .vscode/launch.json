@@ -12,8 +12,17 @@
       "cwd": "${workspaceFolder}",
       "program": "${file}",
       "outFiles": [
-          "${workspaceFolder}/functions/bbbb/**/*.js"
+          "${workspaceFolder}/functions/dist/**/*.js"
       ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "firebase_ts_debug",
+      "cwd": "${workspaceFolder}",
+      "program": "./functions/lib/controllers/news_crawler.js",
+      "preLaunchTask": "Typescipt Compile",
+      "internalConsoleOptions": "openOnSessionStart"
     }
   ]
 }
