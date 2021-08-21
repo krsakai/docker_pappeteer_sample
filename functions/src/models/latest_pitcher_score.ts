@@ -3,9 +3,10 @@ import { JSON, JsonObject, JsonProperty } from "ta-json";
 const year = dayjs().format('YYYY');
 import '../extensions/array.extension'
 import '../extensions/string.extension'
+import { LatestScore } from './latest_score';
 
 @JsonObject()
-export class LatestPitcherScore {
+export class LatestPitcherScore implements LatestScore {
   /// 日付
   @JsonProperty('date')
   date: string;

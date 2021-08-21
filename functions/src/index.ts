@@ -4,6 +4,9 @@ import * as Crawler from "./controllers/crawler"
 import * as ScoreRepository from './repositories/score_repository';
 import * as NewsRepository from "./repositories/news_repository";
 import { VALID_MEMORY_OPTIONS } from "firebase-functions";
+import { PushNotification } from "./controllers/push_notification";
+import dayjs from "dayjs";
+import { LatestScore } from "./models/latest_score";
 admin.initializeApp();
 
 const runtimeOpts = {
@@ -13,7 +16,7 @@ const runtimeOpts = {
 // const configuedFunction = functions.region('asia-northeast1').runWith(runtimeOpts)
 // export const helloWorld = configuedFunction.https.onRequest(async (request, response) => {
 const configuedFunction = functions.region('asia-northeast1').runWith(runtimeOpts).pubsub
-exports.fetchLatestScoreScheduleTask = configuedFunction.schedule('every 1 hours').onRun(async (context) => {
+exports.fetchInformationScheduleTask = configuedFunction.schedule('every 1 hours').onRun(async (context) => {
   const latestHitterScore = await new Crawler.LatestHitterScoreCrawler().run<ScoreRepository.LatestHitterScore>()
   await admin.firestore()
           .collection("latestHitterScore")
@@ -40,9 +43,7 @@ exports.fetchLatestScoreScheduleTask = configuedFunction.schedule('every 1 hours
             .doc(pitcherScore.year)
             .set(pitcherScore.toJson())
   })))
-});
 
-exports.fetchNewsScheduleTask = configuedFunction.schedule('every 1 hours').onRun(async (context) => {
   const newsList = await new Crawler.NewsCrawler().run<[NewsRepository.News]>()
   await Promise.all(newsList.map((async news => {
     await admin.firestore()
@@ -50,4 +51,15 @@ exports.fetchNewsScheduleTask = configuedFunction.schedule('every 1 hours').onRu
             .doc(news.newsId)
             .set(news.toJson())
   })))
+
+  const lastUpdateDate = await PushNotification.fetchLastUpdateDate()
+  const newScoreInformationList = [
+    dayjs(lastUpdateDate).isBefore(dayjs(latestHitterScore.date)) ? latestHitterScore as LatestScore : null,
+    dayjs(lastUpdateDate).isBefore(dayjs(latestPitcherScore.date)) ? latestPitcherScore as LatestScore : null
+  ].removeNull<LatestScore>()
+  if (newScoreInformationList.length > 0) {
+    const latestScore = newScoreInformationList[0]
+    PushNotification.post(`${dayjs(latestScore.date).format('YYYY年MM月DD日の試合情報')}`, `まもなく${latestScore.vsTeam}戦の試合の開始時刻です`)
+    PushNotification.updateSendDate(dayjs(latestScore.date).format('YYYY-MM-DD'))
+  }
 });
