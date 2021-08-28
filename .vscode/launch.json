@@ -20,7 +20,7 @@
       "request": "launch",
       "name": "firebase_ts_debug",
       "cwd": "${workspaceFolder}",
-      "program": "./functions/lib/controllers/news_crawler.js",
+      "program": "./functions/lib/controllers/bat_postal_report_crawler.js",
       "preLaunchTask": "Typescipt Compile",
       "internalConsoleOptions": "openOnSessionStart"
     }

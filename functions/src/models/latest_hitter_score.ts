@@ -6,7 +6,7 @@ import { LatestScore } from './latest_score';
 const year = dayjs().format('YYYY');
 
 @JsonObject()
-export class LatestHitterScore implements LatestScore{
+export class LatestHitterScore implements LatestScore {
   /// 日付
   @JsonProperty('date')
   date: string;
