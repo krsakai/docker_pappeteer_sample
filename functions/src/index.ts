@@ -47,8 +47,36 @@ exports.postBatReportedScheduleTask = configuedFunction.schedule('every 20 minut
       await PostalReportRepository.updateLatestBatReportedList(latestBatReportList)
       await fetchScoreTask()
     }
+  } else if (latestBatReportList.length < batReportedList.length && latestBatReportList.length > 0) {
+    const report = latestBatReportList[latestBatReportList.length - 1]
+    try {
+      await PostalReportRepository.postBatStart(report)
+    } catch (exception) {
+      console.log(exception)
+    } finally {
+      await PostalReportRepository.deleteLatestBatReportedList()
+      await PostalReportRepository.updateLatestBatReportedList(latestBatReportList)
+      await fetchScoreTask()
+    }
   }
 });
+
+// exports.regist = configuedFunction.schedule('every 12 hours').onRun(async (context) => {
+//   var list = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30"]
+//   try {
+//     Promise.all(list.map(async (index) => {
+//       await admin.firestore().collection("quiz").doc().set({
+//         'id': index,
+//         'issueText': '',
+//         'answerText': '',
+//         'answerDescribeText': '',
+//         'selectionList': ['']
+//       })
+//     }))
+//   } catch(exception) {
+//     console.log(exception)
+//   }
+// });
 
 async function fetchCalendarTask() {
   try {
